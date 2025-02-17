@@ -1,13 +1,12 @@
-# Contributions-to-Karmayogi-Bharat
-## C4GT Communications Console
+## C4GT Communications Console (Contributions-to-Karmayogi-Bharat)
 
 API Usage and Showcase : https://youtu.be/fxzCveuP0gM
 
-# Smart Email Notifier Documentation
+# Smart Email Notifier
 
 ## Overview
 
-The Email Notifier Service is designed to streamline the process of sending notifications and managing email templates within an application. It provides a flexible interface for creating, configuring, and sending emails, as well as viewing user data and email history.
+The Smart Email Notifier App is designed to streamline the process of sending notifications and managing email templates within an application. It provides a flexible interface for creating, configuring, and sending emails, as well as viewing user data and email history.
 
 ## APIs
 
@@ -21,6 +20,8 @@ The Email Notifier Service is designed to streamline the process of sending noti
 | POST        | anonymous, multerMiddleware, uploadUserData | `/api/email/upload-user-data` |
 | GET         | anonymous, router                     | `/api/email/history`           |
 
+
+![Docs](https://github.com/user-attachments/assets/59602f97-1b5f-4420-adae-f901f16abd8f)
 ## Tech Stack
 
 This project uses the **MEAN** stack:
@@ -75,30 +76,36 @@ The main content area dynamically displays content based on the selected menu op
 
 Users can navigate through the service using a menu that changes the `selectedMenu` variable. This variable controls which component is displayed in the main content area.
 
-### Creating a Template
-
+### 1. Creating a Template
+![Create](https://github.com/user-attachments/assets/a0d9e76d-162a-4475-b7cc-3e39a4a16711)
 1. Select "Create Template" from the menu.
 2. Fill in the template details in the provided form.
 3. Submit the form to save the template.
 
-### Configuring a Template
-
+### 2. Configuring a Template
+![configure 1](https://github.com/user-attachments/assets/e5953910-d7f9-4e2a-84ab-f891301808cb)
+![Edit template configure 1](https://github.com/user-attachments/assets/299c4adb-0cd9-44ea-af9e-7312ba0d291f)
+![Configure Template Save](https://github.com/user-attachments/assets/20776af0-d580-407d-9c80-6a55222444c6)
 1. Select "Configure Template" from the menu.
 2. Choose a template from the list of existing templates.
 3. Make the necessary changes in the configuration interface.
 4. Save the changes to update the template.
 
-### Viewing User Data
-
+### 3. Viewing User Data
+![User Data](https://github.com/user-attachments/assets/6520e27f-bd41-425a-ba26-21699a25393f)
 Select "View User Data" from the menu to display a list of user data, filter and select users to send email.
 
-### Uploading User Data
+### 4. Uploading User Data
 
 1. Select "Upload User Data" from the menu.
 2. Use the interface to upload user data files.
 3. Confirm the upload to make the data available for email targeting.
 
-### Sending an Email
+### 5. Sending an Email
+![Send Email 1](https://github.com/user-attachments/assets/ae74cb29-7e00-4ba2-8183-84d8ac8d5ff6)
+![Send](https://github.com/user-attachments/assets/a742a593-3e40-4f26-bfca-945792ef6f6b)
+![Email Sent](https://github.com/user-attachments/assets/c80a994f-11ff-4c48-8dd8-b0761d5dd673)
+![Received Email](https://github.com/user-attachments/assets/2407b4a3-8a6f-4f62-a434-7bcfdb095a0b)
 
 1. Select "Send Email" from the menu.
 2. Choose a template and configure the necessary details.
@@ -106,9 +113,14 @@ Select "View User Data" from the menu to display a list of user data, filter and
 4. Upload an attachment (optional).
 5. Submit the form to send the email to the selected recipients.
 
-### Viewing History
-
+### 6. Viewing History
+![History](https://github.com/user-attachments/assets/2fdf65c4-6389-414f-9ff0-6a399128914b)
 Select "History" from the menu to view a log of sent emails, including timestamps and recipient details.
+
+### 7. DATA BASE (MONGODB)
+![DB Templates](https://github.com/user-attachments/assets/b788e4fb-9fa6-4378-b8ac-adb2b7a628b6)
+![DB History](https://github.com/user-attachments/assets/5651cc85-d695-466b-b150-e4454c6a7e11)
+
 
 ## Conclusion
 
