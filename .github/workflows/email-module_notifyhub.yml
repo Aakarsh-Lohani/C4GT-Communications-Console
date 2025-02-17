@@ -26,12 +26,30 @@ jobs:
         run: |
           cd Front-end
           npm install
-      
+          
       # Install dependencies for the backend
       - name: Install backend dependencies
         run: |
           cd Back-end
           npm install
+
+      # Prepare backend source files (copy all files except node_modules)
+      - name: Prepare backend source files
+        shell: bash
+        run: |
+          shopt -s extglob
+          rm -rf backend-source
+          mkdir backend-source
+          cp -R Back-end/!(node_modules) backend-source/
+      
+      # Prepare frontend source files (copy all files except node_modules)
+      - name: Prepare frontend source files
+        shell: bash
+        run: |
+          shopt -s extglob
+          rm -rf frontend-source
+          mkdir frontend-source
+          cp -R Front-end/!(node_modules) frontend-source/
       
       - name: Upload artifact - Backend Part 1
         uses: actions/upload-artifact@v4
@@ -58,10 +76,8 @@ jobs:
             ./Back-end/node_modules/n*
             ./Back-end/node_modules/o*
             ./Back-end/node_modules/p*
-            ./Back-end/node_modules/.*
+            ./Back-end/node_modules/.* 
             ./Back-end/node_modules/@*
-            
-            
       - name: Upload artifact - Backend Part 3
         uses: actions/upload-artifact@v4
         with:
@@ -81,8 +97,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend-part4
-          path: |
-            ./Back-end/!(node_modules)/**/*
+          path: backend-source
+          
       - name: Upload artifact - Frontend Part 1
         uses: actions/upload-artifact@v4
         with:
@@ -108,99 +124,7 @@ jobs:
             ./Front-end/node_modules/n*
             ./Front-end/node_modules/o*
             ./Front-end/node_modules/p*
-            ./Front-end/node_modules/.*
+            ./Front-end/node_modules/.* 
             ./Front-end/node_modules/@*
-      - name: Upload artifact - Frontend Part 3
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-part3
-          path: |
-            ./Front-end/node_modules/q*
-            ./Front-end/node_modules/r*
-            ./Front-end/node_modules/s*
-            ./Front-end/node_modules/t*
-            ./Front-end/node_modules/u*
-            ./Front-end/node_modules/v*
-            ./Front-end/node_modules/w*
-            ./Front-end/node_modules/x*
-            ./Front-end/node_modules/y*
-            ./Front-end/node_modules/z*
-      - name: Upload artifact - Frontend Part 4
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-part4
-          path: |
-            ./Front-end/!(node_modules)/**/*
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
+      - name: Upload artifact - Frontend Par
 
-    steps:
-      - name: Download artifact - Backend Part 1
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-part1
-      
-      - name: Download artifact - Backend Part 2
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-part2
-      
-      - name: Download artifact - Backend Part 3
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-part3
-
-      - name: Download artifact - Backend Part 4
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-part4
-
-      - name: Download artifact - Frontend Part 1
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-part1
-      
-      - name: Download artifact - Frontend Part 2
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-part2
-
-      - name: Download artifact - Frontend Part 3
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-part3
-
-      - name: Download artifact - Frontend Part 4
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-part4
-          
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_417173D2BA124B6EA0A4A482E1F421E7 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4717C74CA0F84BFE9DBC66E48BF7D9BA }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9BF9C38490434729A237F514D167C4C8 }}
-
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
-        with:
-          app-name: 'notifyhub'
-          slot-name: 'Production'
-          package: .
-
-      - name: Start frontend application
-        run: |
-          cd Front-end
-          npm start &
-      - name: Start backend application
-        run: |
-          cd Back-end
-          npm start &
