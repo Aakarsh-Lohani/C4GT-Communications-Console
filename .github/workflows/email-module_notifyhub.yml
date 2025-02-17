@@ -221,10 +221,10 @@ jobs:
 
       - name: Start frontend application
         run: |
-          cd Front-end
+          cd front-end
           npm start &
       - name: Start backend application
         run: |
-          cd Back-end
+          cd back-end
           npm start &
 
