@@ -14,7 +14,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
@@ -67,6 +68,7 @@ jobs:
             ./Back-end/node_modules/i*
             ./Back-end/node_modules/k*
             ./Back-end/node_modules/l*
+      
       - name: Upload artifact - Backend Part 2
         uses: actions/upload-artifact@v4
         with:
@@ -78,6 +80,7 @@ jobs:
             ./Back-end/node_modules/p*
             ./Back-end/node_modules/.* 
             ./Back-end/node_modules/@*
+      
       - name: Upload artifact - Backend Part 3
         uses: actions/upload-artifact@v4
         with:
@@ -93,6 +96,7 @@ jobs:
             ./Back-end/node_modules/x*
             ./Back-end/node_modules/y*
             ./Back-end/node_modules/z*
+      
       - name: Upload artifact - Backend Part 4
         uses: actions/upload-artifact@v4
         with:
@@ -115,6 +119,7 @@ jobs:
             ./Front-end/node_modules/i*
             ./Front-end/node_modules/k*
             ./Front-end/node_modules/l*
+      
       - name: Upload artifact - Frontend Part 2
         uses: actions/upload-artifact@v4
         with:
@@ -126,5 +131,100 @@ jobs:
             ./Front-end/node_modules/p*
             ./Front-end/node_modules/.* 
             ./Front-end/node_modules/@*
-      - name: Upload artifact - Frontend Par
+      
+      - name: Upload artifact - Frontend Part 3
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-part3
+          path: |
+            ./Front-end/node_modules/q*
+            ./Front-end/node_modules/r*
+            ./Front-end/node_modules/s*
+            ./Front-end/node_modules/t*
+            ./Front-end/node_modules/u*
+            ./Front-end/node_modules/v*
+            ./Front-end/node_modules/w*
+            ./Front-end/node_modules/x*
+            ./Front-end/node_modules/y*
+            ./Front-end/node_modules/z*
+      
+      - name: Upload artifact - Frontend Part 4
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-part4
+          path: frontend-source
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download artifact - Backend Part 1
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-part1
+      
+      - name: Download artifact - Backend Part 2
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-part2
+      
+      - name: Download artifact - Backend Part 3
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-part3
+
+      - name: Download artifact - Backend Part 4
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-part4
+
+      - name: Download artifact - Frontend Part 1
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-part1
+      
+      - name: Download artifact - Frontend Part 2
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-part2
+
+      - name: Download artifact - Frontend Part 3
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-part3
+
+      - name: Download artifact - Frontend Part 4
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-part4
+          
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_417173D2BA124B6EA0A4A482E1F421E7 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4717C74CA0F84BFE9DBC66E48BF7D9BA }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9BF9C38490434729A237F514D167C4C8 }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        id: deploy-to-webapp
+        with:
+          app-name: 'notifyhub'
+          slot-name: 'Production'
+          package: .
+
+      - name: Start frontend application
+        run: |
+          cd Front-end
+          npm start &
+      - name: Start backend application
+        run: |
+          cd Back-end
+          npm start &
 
